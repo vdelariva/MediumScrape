@@ -11,20 +11,36 @@ mongoose.connect("mongodb://localhost/mediumDB");
 module.exports = (app) => {
   // Routes
 
+  // Default route
+  // Get all articles from db
+  app.get("/", function(req, res) {
+    db.Article.find({})
+    .then(function(dbArticle) {
+      // Successfully found Articles, send them back to the client
+      // res.json(dbArticle);
+      res.render("index", {articles:dbArticle});
+    })
+    .catch(function(err) {
+      // If an error occurred, send it to the client
+      res.json(err);
+    });
+  });
+
+
   // A GET route for scraping the Medium/Programming website
   app.get("/scrape", function(req, res) {
     // First, grab the body of the html with request
     axios.get("https://medium.com/topic/programming").then(function(response) {
       // Then, load that into cheerio and save it to $ for a shorthand selector
-      var $ = cheerio.load(response.data);
+      let $ = cheerio.load(response.data);
       // console.log(`data: ${response.data}`)
 
       // Now, grab every section with classes l, m & n, and do the following:
       $("section.l.m.n").each(function(i, element) {
         // Save an empty result object
-        var result = {};
+        let result = {};
 
-        // Add the text, href, summary, author & read teime of every article, and save them as properties of the result object
+        // Add the text, href, summary, author & read time of every article, and save them as properties of the result object
         result.headline = $(element)
           .children("div")
           .children("section")
@@ -102,8 +118,9 @@ module.exports = (app) => {
     // Grab every document in the Articles collection
     db.Article.find({})
       .then(function(dbArticle) {
-        // If we were able to successfully find Articles, send them back to the client
-        res.json(dbArticle);
+        // Successfully found Articles, send them back to the client
+        // res.json(dbArticle);
+        res.render("index", {articles:dbArticle});
       })
       .catch(function(err) {
         // If an error occurred, send it to the client
