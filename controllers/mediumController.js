@@ -30,7 +30,7 @@ module.exports = (app) => {
   // A GET route for scraping the Medium/Programming website
   app.get("/scrape", function(req, res) {
     // First, grab the body of the html with request
-    axios.get("https://medium.com/topic/programming").then(function(response) {
+    axios.get("https://medium.com/topic/programming").then((response) => {
       // Then, load that into cheerio and save it to $ for a shorthand selector
       let $ = cheerio.load(response.data);
       // console.log(`data: ${response.data}`)
@@ -38,7 +38,7 @@ module.exports = (app) => {
       // Now, grab every section with classes l, m & n, and do the following:
       $("section.l.m.n").each(function(i, element) {
         // Save an empty result object
-        let result = {};
+        var result = {};
 
         // Add the text, href, summary, author & read time of every article, and save them as properties of the result object
         result.headline = $(element)
@@ -91,23 +91,23 @@ module.exports = (app) => {
           .text();
         result.dateAdded = Date.now();
 
-        // Do not save to database if empty result
-        if (result.headline !== "") {
-          console.log(`result: ${JSON.stringify(result)}\n`);
+          // Do not save to database if empty result
+          if (result.headline !== "") {
+            console.log(`result: ${JSON.stringify(result)}\n`);
 
-          // Create a new Article using the `result` object built from scraping
-          db.Article.create(result)
-            .then(function(dbArticle) {
-              // View the added result in the console
-              console.log(dbArticle);
-            })
-            .catch(function(err) {
-              // If an error occurred, send it to the client
-              return res.json(err);
-            });
-        }
-      });
-
+            // Create a new Article using the `result` object built from scraping
+            db.Article.create(result)
+              .then(function(dbArticle) {
+                // View the added result in the console
+                console.log(dbArticle);
+              })
+              .catch(function(err) {
+                // If an error occurred, send it to the client
+                return res.json(err);
+              });
+          }
+        });
+        
       // If successfully scrape and save an Article, send a message to the client
       res.send("Scrape Complete");
     });

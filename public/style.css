@@ -1,4 +1,10 @@
-body { background-color: #F2F6D0 }
+/* font-family: 'Merriweather', serif;
+font-family: 'Open Sans', sans-serif; */
+
+body { 
+  background-image: url(./img/noisy-grid.png); 
+  font-family: 'Open Sans', sans-serif;
+}
 #wrapper {
   width: 960px;
   margin-left: auto;

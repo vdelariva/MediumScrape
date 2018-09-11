@@ -1,13 +1,21 @@
+<!-- Navbar -->
+<nav class="navbar navbar-dark bg-primary">
+  <a class="navbar-brand" href="#">
+    <img src="img/mediumNews.png" width="30" height="30" class="d-inline-block align-top" alt="">
+    Medium ∙ Web Scrapper
+  </a>
+  <button class="btn btn-outline-white text-primary my-2 my-sm-0" type="submit">Scrape</button>
+</nav>
+
 <div id="wrapper">
-  <h1>Note Scraper</h1>
   <div id="articles">
     {{#each articles}}
-      <p data-id={{this._id}}>{{this.headline}}<br>
-        {{this.link}}<br>
-        {{this.summary}}<br>
-        {{this.author}}<br>
-        {{this.readTime}}<br>
-        {{this.dateAdded}}</p>
+      <h3 data-id={{this._id}}>{{this.headline}}</h3>
+      <p>{{this.link}}</p>
+      <p>Summary: {{this.summary}}</p>
+      <p>Byline: {{this.author}}</p>
+      <p>{{this.readTime}}</p>
+      <p>{{this.dateAdded}}</p>
     {{/each}}
   </div>
   <div id="notes"></div>
